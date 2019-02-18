@@ -39,7 +39,7 @@
         </el-dialog>
 
 
-        <el-dialog title="添加楼层" :visible.sync="tjlc">
+        <el-dialog :title="title" :visible.sync="tjlc">
             <el-form :model="tjlcform" label-position="left" label-width="120px">
                 <el-form-item label="宿舍楼" >
                     <el-input v-model="tjlcform.sslmc" :disabled="true" ></el-input>
@@ -48,7 +48,7 @@
                     <el-input v-model="tjlcform.lc"  :disabled="true"></el-input>
                 </el-form-item>
                 <el-form-item label="房间号"  >
-                    <el-input v-model="tjlcform.fjh" :disabled="true"></el-input>
+                    <el-input v-model="tjlcform.fjh" :disabled="disabledFjh"></el-input>
                 </el-form-item>
                 <el-form-item label="最大入住人数" >
                     <el-input v-model="tjlcform.zdrzrs" ></el-input>
@@ -66,14 +66,14 @@
         <div style = "margin : 20px 20px 0px 5px ">
             <template  v-for="(sslc,index ) in ssxx">
                 <div>
-            <el-radio-group  v-model="radio4">
+            <el-radio-group  v-model="radio4" @change="addtjfj">
                 <el-radio-button :label="index +c" style = "margin : 5px 10px 10px 0px ;"></el-radio-button>
                 <template v-for=" itm in sslc" >
                     <el-radio-button :label="itm.fjh + ' ('+0+'/'+itm.zdrzrs+')'"  style = "margin : 5px 10px 10px 0px ;" border = "true" text-color="#9d9699">
                     </el-radio-button>
                 </template>
-                <!--<el-radio-button label="+" style = "margin : 5px 10px 10px 0px ;" @click="addtjfj()"></el-radio-button>-->
-                <el-button  type="primary" style = "margin : 5px 10px 10px 0px ;" @click="addtjfj(this)" size = "mini" value = index>+</el-button>
+                <el-radio-button :label="index" style = "margin : 5px 10px 10px 0px ;"  >+</el-radio-button>
+                <!--<el-button   type="primary" style = "margin : 5px 10px 10px 0px ;" @click.native="addtjfj" size = "mini" value = index>+</el-button>-->
             </el-radio-group>
                 </div>
             </template>
@@ -89,6 +89,8 @@
             return  {
                 dialogFormVisible:false,
                 tjlc:false,
+                disabledFjh:true,
+                title:'',
                 radio3 :'',
                 radio4:'',
                 itms:'',
@@ -134,6 +136,8 @@
             },
             addtjlc(){
                 let i = 0;
+                this.title = "添加楼层"
+                this.disabledFjh = true
                 this.tjlc = true
                 this.tjlcform.sslmc = this.radio3
                 for(let a in this.ssxx){
@@ -191,10 +195,9 @@
             },
             tjlcquxiao(){
                 this.tjlc  = false
-                this.radio3 ='';
+                //this.radio3 ='';
             },
             tjlcqueding(form){
-
                 this.tjlc  = false
                 for(let i = 0 ;i<this.itms.length;i++){
                     if(form.sslmc == this.itms[i].sslmc){
@@ -205,6 +208,7 @@
                // this.radio3 ='';
                 this.$axios.post("/api/sslxx/addLcxx",form).then(re => {
                     if(re.data.code == "OK"){
+                        this.getSslxx()
                         this.$message("OK")
                     }else{
                         this.$message(re.data.data)
@@ -212,9 +216,21 @@
                 })
             },
             addtjfj(){
-                debugger
-                let a = this.radio4
-
+                let numgExp = /^[0-9]+$/
+               let numRe = new RegExp(numgExp)
+                if(numRe.test(this.radio4)){
+                    let i = 0;
+                    this.title = "添加房间"
+                    this.disabledFjh = false
+                    this.tjlc = true
+                    this.tjlcform.sslmc = this.radio3
+                    for(let a in this.ssxx){
+                        i++
+                    }
+                    this.tjlcform.lc = this.radio4
+                    this.tjlcform.fjh = ''
+                    this.radio4 = ''
+                }
             },
         }
     }
