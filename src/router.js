@@ -11,6 +11,7 @@ import Editor from './views/Editor'
 import Dialog from './views/Dialog'
 import MonitoringInformation from './views/MonitoringInformation'
 import Lsk from './views/Lsk'
+import Ssqxt from './views/Ssqxt'
 import Aqjypx from './views/Aqjypx'
 import Rytj from './views/Rytj'
 import Sslxx from './views/Sslxx'
@@ -45,6 +46,7 @@ const router  = new Router({
         { path: '/sslxx', name: 'sslxx', component: Sslxx },
         { path: '/jljl', name: 'jljl', component: Jljl },
         { path: '/aqjypx', name: 'aqjypx', component: Aqjypx },
+        { path: '/ssqxt', name: 'ssqxt', component: Ssqxt },
       ]
     },
 

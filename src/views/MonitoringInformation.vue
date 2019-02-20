@@ -346,12 +346,7 @@
                         }
                     }
                 }
-            /*    let seriesVal = {
-                    name:label,
-                    type:'line',
-                    stack: '总量',
-                    data:pm25,
-                }*/
+                debugger;
                 let option = '';
                 myChart.setOption(
                     option = {
@@ -414,52 +409,7 @@
                             }
                         ]
                 })
-/*                    myChart.setOption(option = {
-                        title: {
-                            text: 'Beijing AQI'
-                        },
-                        tooltip: {
-                            trigger: 'axis'
-                        },
-                        xAxis: {
-                            data: data.map(function (item) {
-                                return item[0];
-                            })
-                        },
-                        yAxis: {
-                            splitLine: {
-                                show: false
-                            }
-                        },
-                        toolbox: {
-                            left: 'center',
-                            feature: {
-                                dataZoom: {
-                                    yAxisIndex: 'none'
-                                },
-                                restore: {},
-                                saveAsImage: {}
-                            }
-                        },
-                        dataZoom: [{
-                            startValue: '2014-06-01'
-                        }, {
-                            type: 'inside'
-                        }],
-
-                        series: {
-                            type: 'line',
-                            data: data.map(function (item) {
-                                return item[1];
-                            }),
-
-                        }
-                    });*/
             },
-/*            handleClick(tab,event){
-                debugger;
-                console.log(tab, event);
-            },*/
             current_change:function(currentPage){
                 this.currentPage = currentPage;
             },
