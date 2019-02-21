@@ -69,7 +69,7 @@
             <el-radio-group  v-model="radio4" @change="addtjfj">
                 <el-radio-button :label="index +c" style = "margin : 5px 10px 10px 0px ;"></el-radio-button>
                 <template v-for=" itm in sslc" >
-                    <el-radio-button :label="itm.fjh + ' ('+0+'/'+itm.zdrzrs+')'"  style = "margin : 5px 10px 10px 0px ;" border = "true" text-color="#9d9699">
+                    <el-radio-button :label="itm.fjh + ' ('+itm.rzrs+'/'+itm.zdrzrs+')'"  style = "margin : 5px 10px 10px 0px ;" border = "true" text-color="#9d9699">
                     </el-radio-button>
                 </template>
                 <el-radio-button :label="index" style = "margin : 5px 10px 10px 0px ;"  >+</el-radio-button>

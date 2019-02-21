@@ -150,7 +150,7 @@
                         </el-col>
                      <el-col :space="4"  >
                      <div class = "user_5" style="width:60% ">
-                         <el-form-item prop='yhkh' label="开户行:">
+                         <el-form-item prop='yhkh' label="银行卡号:">
                              <el-input type="yhkh" v-model="formData.yhkh"></el-input>
                          </el-form-item>
                          <el-form-item prop='lxdh' label="联系电话:">

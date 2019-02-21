@@ -330,12 +330,13 @@
   <!--  <DialogFound :dialogi='dialogi' :formData='formData' ></DialogFound>-->
 </div>
     </el-tab-pane>
-    <el-tab-pane label="工种统计" name="second">
-        <div style="width:400px;height:300px" ref="chart">
-
+    <el-tab-pane label="工人统计" name="second">
+        <div style="width:100%;height:60%" >
+            <div style="width:250px;height:167px" id="chart"></div>
+            <div style="width:300px;height:167px;float:left" id="bz"></div>
+            <div style="width:300px;height:167px ;float:right" id="dw"></div>
         </div>
-        <div style="width:300px;height:300px" ref="11">
-
+        <div style="width:100%;height:40%" >
         </div>
     </el-tab-pane>
     </el-tabs>
@@ -445,7 +446,7 @@
                 })
             },
             initCharts(){
-                let myChart = echarts.init(this.$refs.chart);
+                let myChart = echarts.init(document.getElementById("chart") );
                 let grlb = [];
                 let sl = [];
                 let data = []
@@ -479,14 +480,13 @@
                     },
                     tooltip : {
                         trigger: 'item',
-                        formatter: "{a} <br/>{b} : {c} ({d}%)"
                     },
                     series : [
                         {
                             name: '访问来源',
                             type: 'pie',
                             radius : '25%',
-                            center: ['25%', '45%'],
+                            center: ['40%', '45%'],
                             data:data,
 
                         }
@@ -498,6 +498,105 @@
                             shadowColor: 'rgba(0, 0, 0, 0.5)'
                         }
                     }
+                });
+                let grbz =[];
+                let dataBz = [];
+                for(let g=0; g<this.lwbz.length;g++){
+                    grbz.push(this.lwbz[g].mc)
+                    let grgzsl = 0;
+                    for(let h=0; h<this.itmes.length;h++){
+                        if(this.lwbz[g].nm == this.itmes[h].bznm){
+                            grgzsl++
+                        }
+
+                    }
+                    dataBz.push(grgzsl)
+                }
+                let bz = echarts.init(document.getElementById("bz"));
+                let optionBz =''
+                bz.setOption(optionBz = {
+                    title: {
+                        text: '按班组统计',
+                        subtext: '数据来自网络'
+                    },
+                    tooltip: {
+                        trigger: 'axis',
+                        axisPointer: {
+                            type: 'shadow'
+                        }
+                    },
+                    grid: {
+                        left: '3%',
+                        right: '4%',
+                        bottom: '20%',
+                        containLabel: true
+                    },
+                    xAxis: {
+                        type: 'value',
+                        boundaryGap: [0, 0.01]
+                    },
+                    yAxis: {
+                        type: 'category',
+                        data: grbz
+                    },
+                    series: [
+                        {
+                            type: 'bar',
+                            barWidth: '30%',
+                            data: dataBz
+                        }
+                    ]
+                });
+                let grDw =[];
+                let dataDw = [];
+                for(let g=0; g<this.lwdw.length;g++){
+                    grDw.push(this.lwdw[g].mc)
+                    let grgzsl = 0;
+                    for(let h=0; h<this.itmes.length;h++){
+                        if(this.lwdw[g].nm == this.itmes[h].dwnm){
+                            grgzsl++
+                        }
+
+                    }
+                    dataDw.push(grgzsl)
+                }
+                let dw = echarts.init(document.getElementById("dw") );
+                let optionDw =''
+                dw.setOption(optionDw = {
+                    color: ['#3398DB'],
+                    tooltip : {
+                        trigger: 'axis',
+                        axisPointer : {            // 坐标轴指示器，坐标轴触发有效
+                            type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+                        }
+                    },
+                    grid: {
+                        left: '3%',
+                        right: '5%',
+                        bottom: '3%',
+                        containLabel: true
+                    },
+                    xAxis : [
+                        {
+                            type : 'category',
+                            data : grDw,
+                            axisTick: {
+                                alignWithLabel: true
+                            }
+                        }
+                    ],
+                    yAxis : [
+                        {
+                            type : 'value'
+                        }
+                    ],
+                    series : [
+                        {
+                            type:'bar',
+                            barWidth: '30%',
+                            data:dataDw
+                        }
+                    ]
                 });
             },
             getGgrgz(){
@@ -547,6 +646,7 @@
             onEditMoney(row) {
                 this.formData = row
                 this.$router.push({name:"editor",params:{
+                        rynm:row.rynm,
                         sfzh:row.sfzh,
                         xm:row.xm,
                         csrq:row.csrq,

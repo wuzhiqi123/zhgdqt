@@ -29,7 +29,7 @@
                                         <el-input type="sfzh" v-model="formData.sfzh"  ></el-input>
                                     </el-form-item>
                                     <el-form-item prop='csrq' label="出生日期:">
-                                        <el-date-picker type="date" placeholder="出生日期" v-model="formData.csrq" style="width: 100%;" ></el-date-picker>
+                                        <el-date-picker type="date" placeholder="出生日期" v-model="formData.csrq" style="width: 100%;" value-format="yyyy-MM-dd" format="yyyy-MM-dd"></el-date-picker>
                                     </el-form-item>
                                     <el-form-item prop='jg' label="籍贯:">
                                         <el-input type="jg" v-model="formData.jg"></el-input>
@@ -254,7 +254,8 @@
         },
         methods:{
             getrouter(){
-                this.formData.sfzh = this.$route.params.sfzh,
+                    this.formData.rynm = this.$route.params.rynm,
+                    this.formData.sfzh = this.$route.params.sfzh,
                     this.formData.xm=this.$route.params.xm,
                     this.formData.csrq=this.$route.params.csrq,
                     this.formData.jg=this.$route.params.jg,
@@ -332,7 +333,10 @@
                         form.grgzlbnm =   this.format_grgz_list[i].nm
                     }
                 }
+                let csrqaa = form.csrq.toString()
+                form.csrqaa = csrqaa;
                 this.$axios.post("/api/workers/add",form).then(re=>{
+
                     if(re.data.code == "OK"){
                         this.$message("修改成功成功")
                         this.$router.push("/workers");

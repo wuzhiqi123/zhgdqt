@@ -405,6 +405,7 @@
                 this.rz.ssnm=this.$route.params.ssnm
                 this.$axios.post("/api/ryrz/add",this.rz).then(re =>{
                     if(re.data.code =="OK"){
+                        this.$router.push("/sslxx");
                         this.$message("成功")
                     }else{
                         this.$message(re.data.data)
