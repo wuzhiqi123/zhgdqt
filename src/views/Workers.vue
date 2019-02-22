@@ -331,11 +331,27 @@
 </div>
     </el-tab-pane>
     <el-tab-pane label="工人统计" name="second">
-        <div style="width:100%;height:60%" >
-            <div style="width:250px;height:167px" id="chart"></div>
-            <div style="width:300px;height:167px;float:left" id="bz"></div>
-            <div style="width:300px;height:167px ;float:right" id="dw"></div>
-        </div>
+        <el-row>
+            <el-row>
+                <el-col :span="12">
+                    <div style="width:300px;height:240px;float:right" id="chart"></div>
+                </el-col>
+                <el-col :span="12">
+                    <div style="width:300px;height:240px;float:right" id="chart"></div>
+                </el-col>
+            </el-row>
+            <el-row>
+                <el-col :span="12">
+                    <div style="width:300px;height:240px;float:left" id="bz"></div>
+                </el-col>
+                <el-col :span="12">
+                    <div style="width:300px;height:240px ;float:right" id="dw"></div>
+                </el-col>
+            </el-row>
+        </el-row>
+        <el-row>
+            <el-col :span="24"></el-col>
+        </el-row>
         <div style="width:100%;height:40%" >
         </div>
     </el-tab-pane>
@@ -730,6 +746,10 @@
     }
     .el-row {
         margin-bottom: 15px;
+    }
+    .grid-content {
+        border-radius: 4px;
+        min-height: 200px;
     }
     .el-dialog__header{
         background: #2b46bf;

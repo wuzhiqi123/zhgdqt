@@ -35,7 +35,7 @@
         <el-tabs v-model="activeName"  @tab-click ="tabClick">
             <el-tab-pane label="未入住人员" name="first">
                 <el-table
-                    :data="itmes"
+                    :data="wrz"
                     stripe
                     size="mini"
                     max-height="350"
@@ -198,11 +198,6 @@
                         @selection-change="changeFun"
                 >
                     <el-table-column
-                            type="selection"
-                            width="55">
-                    </el-table-column>
-
-                    <el-table-column
                             prop="rynm"
                             label="人员内码"
                             align='center'
@@ -361,6 +356,7 @@
                 itmes :[],
                 lwdw:'',
                 lwbz:'',
+                wrz:[],
                 parameter:{
                     bz:'',
                     bznm:"",
@@ -381,7 +377,15 @@
         methods: {
             getWorkersList() {
                 this.$axios.post("/api/user/getUser",this.parameter).then(re => {
+
                     this.itmes = re.data.data
+
+                    for(let i = 0 ;i<this.itmes.length ;i++){
+                        if(this.itmes[i].ssnm != null && this.itmes[i].ssnm !=""){
+                            this.wrz.push(this.itmes[i])
+                        }
+                    }
+
                 })
             },
             handleClick(tab, event) {
@@ -403,14 +407,19 @@
             },
             rzclick(){
                 this.rz.ssnm=this.$route.params.ssnm
-                this.$axios.post("/api/ryrz/add",this.rz).then(re =>{
-                    if(re.data.code =="OK"){
-                        this.$router.push("/sslxx");
-                        this.$message("成功")
-                    }else{
-                        this.$message(re.data.data)
-                    }
-                })
+                if(this.rz.workersList.length != 0){
+                    this.$axios.post("/api/ryrz/add",this.rz).then(re =>{
+                        if(re.data.code =="OK"){
+                            this.$router.push("/sslxx");
+                            this.$message("成功")
+                        }else{
+                            this.$router.push("/sslxx");
+                            this.$message(re.data.data)
+                        }
+                    })
+                }else{
+                    this.$message("请选择人员")
+                }
             },
             tabClick(){
                 this.rz.workersList = null

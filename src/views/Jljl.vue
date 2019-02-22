@@ -8,8 +8,8 @@
                 <el-form-item >
                     <el-input  v-model="ckrorkh" size ="mini" placeholder="请输入奖励对象名称" style="width: 200px ;height:10px ;float:left"></el-input>
                     <el-button @click='selectLsk()'  style=" margin : 7px 0px 0px 0px; width: 50px ;height:28px ;float:left" type="primary" size ="mini" icon="el-icon-search" ></el-button>
-                    <el-button @click='addGr()'  style=" margin : 7px 0px 0px 10px; width: 50px ;width:80px ;height:28px ;float:left" type="primary" size ="mini"  >添加工人</el-button>
-                    <el-button @click='addBz()'  style=" margin : 7px 0px 0px 10px; width: 50px ;width:80px ;height:28px ;float:left" type="primary" size ="mini"  >添加班组</el-button>
+                    <el-button @click='addGr()'  style=" margin : 7px 0px 0px 10px ;width:100px ;height:28px ;float:left" type="primary" size ="mini"   >添加工人奖励</el-button>
+                    <el-button @click='addBz()'  style=" margin : 7px 0px 0px 10px ;width:100px ;height:28px ;float:left" type="primary" size ="mini"   >添加班组奖励</el-button>
                 </el-form-item>
 
             </el-form>
@@ -343,6 +343,9 @@
                         </el-option>
                     </el-select>
                 </el-form-item>-->
+                <el-form-item label="奖励原因"  >
+                    <el-input v-model="tjjljlform.jlyy" ></el-input>
+                </el-form-item>
                 <el-form-item label="事件"  >
                     <el-input v-model="tjjljlform.sj" ></el-input>
                 </el-form-item>
@@ -396,6 +399,9 @@
                 <el-form-item label="事件"  >
                     <el-input v-model="tjjljlform.sj" ></el-input>
                 </el-form-item>
+                <el-form-item label="奖励原因"  >
+                    <el-input v-model="tjjljlform.jlyy" ></el-input>
+                </el-form-item>
                 <el-form-item label="奖励名称"  >
                     <el-input v-model="tjjljlform.jlmc" ></el-input>
                 </el-form-item>
@@ -444,7 +450,7 @@
                     },
                     {
                         nm:2,
-                        value:"以发放",
+                        value:"已发放",
                     },
                 ],
                 lwbz:'',
@@ -465,6 +471,7 @@
                     sjlbz:'',
                     dwnm:'',
                     ssdw:'',
+                    jlyy:'',
                     sj:'',
                     jlmc:'',
                     fssj:'',
@@ -522,9 +529,10 @@
                 this.getlwbzList(this.bzparma)
             },
             tjjlqueding(tjjljlform){
-                for(let i = 0; i< this.lwbz.length ;i++){
-                    if(this.lwbz[i].nm == tjjljlform.bznm){
-                        tjjljlform.sjlbz =   this.lwbz[i].mc
+
+                for(let i = 0; i< this.users.length ;i++){
+                    if(this.users[i].rynm == tjjljlform.rynm){
+                        tjjljlform.sjlgr =   this.users[i].xm
                     }
                 }
                 for(let i = 0; i< this.lwdw.length ;i++){
@@ -548,9 +556,9 @@
                 this.tjjljlbz = false
             },
             tjjlbzqueding(tjjljlform){
-                for(let i = 0; i< this.users.length ;i++){
-                    if(this.users[i].rynm == tjjljlform.rynm){
-                        tjjljlform.sjlgr =   this.users[i].xm
+                for(let i = 0; i< this.lwbz.length ;i++){
+                    if(this.lwbz[i].nm == tjjljlform.bznm){
+                        tjjljlform.sjlbz =   this.lwbz[i].mc
                     }
                 }
                 for(let i = 0; i< this.lwdw.length ;i++){

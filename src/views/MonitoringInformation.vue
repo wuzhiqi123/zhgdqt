@@ -28,12 +28,14 @@
                             prop="nm"
                             label="内码"
                             align='center'
+                            v-if="false"
                     >
                     </el-table-column>
                     <el-table-column
                             prop="gdnm"
                             label="工地内码"
                             align='center'
+                            v-if="false"
                     >
                     </el-table-column>
                     <el-table-column
@@ -118,6 +120,7 @@
                             prop="sjsj"
                             label="数据时间"
                             align='center'
+                            :formatter="formatSjsj"
                     >
                     </el-table-column>
                     <!--<el-table-column
@@ -317,6 +320,9 @@
                     this.total = re.data.total
 
                 })
+            },
+            formatSjsj(row, column){
+                return row.sjsj.substr(0,row.sjsj.length -3)
             },
             caxun(){
                 this.parma.start = new Date(this.value7[0]).getTime()
