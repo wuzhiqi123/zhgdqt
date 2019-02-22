@@ -333,6 +333,16 @@
                         </el-option>
                     </el-select>
                 </el-form-item>
+                <el-form-item label="奖励类型" >
+                    <el-select v-model="tjjljlform.jllxnm"  filterable placeholder="请选择">
+                        <el-option
+                                v-for="(  item ,index) in jllx"
+                                :key="index"
+                                :label="item.mc"
+                                :value="item.nm">
+                        </el-option>
+                    </el-select>
+                </el-form-item>
               <!--  <el-form-item label="受奖励班组" >
                     <el-select v-model="tjjljlform.sjlbz"  filterable placeholder="请选着">
                         <el-option
@@ -396,6 +406,16 @@
                           </el-option>
                       </el-select>
                   </el-form-item>
+                <el-form-item label="奖励类型" >
+                    <el-select v-model="tjjljlform.jllxnm"  filterable placeholder="请选择">
+                        <el-option
+                                v-for="(  item ,index) in jllx"
+                                :key="index"
+                                :label="item.mc"
+                                :value="item.nm">
+                        </el-option>
+                    </el-select>
+                </el-form-item>
                 <el-form-item label="事件"  >
                     <el-input v-model="tjjljlform.sj" ></el-input>
                 </el-form-item>
@@ -438,6 +458,7 @@
                 tjjljl:false,
                 tjjljlbz:false,
                 activeName: '0',
+                jllx:'',
                 users:'',
                 jljlparma:{
                     jlr:'0',
@@ -465,6 +486,8 @@
                     mc:'',
                 },
                 tjjljlform:{
+                    jllx:'',
+                    jllxnm:'',
                     sfbz:'',
                     rynm:'',
                     sjlgr:'',
@@ -483,6 +506,7 @@
             this.getJljl(this.jljlparma)
             this.getlwbzList()
             this.getLWDWList();
+            this.getjllx();
         },
         methods:{
             getWorkersList(grdw){
@@ -499,6 +523,12 @@
             getLWDWList(){
                 this.$axios.post("/api/dictionary/getGrssdw").then(re =>{
                     this.lwdw = re.data.data
+
+                })
+            },
+            getjllx(){
+                this.$axios.post("/api/dictionary/getJllx").then(re =>{
+                    this.jllx = re.data.data
 
                 })
             },
@@ -535,6 +565,13 @@
                         tjjljlform.sjlgr =   this.users[i].xm
                     }
                 }
+
+                for(let i = 0; i< this.jllx.length ;i++){
+                    if(this.jllx[i].nm == tjjljlform.jllxnm){
+                        tjjljlform.jllx =   this.jllx[i].mc
+                    }
+                }
+
                 for(let i = 0; i< this.lwdw.length ;i++){
                     if(this.lwdw[i].nm == tjjljlform.dwnm){
                         tjjljlform.ssdw =   this.lwdw[i].mc

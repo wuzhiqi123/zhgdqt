@@ -224,7 +224,7 @@
         <el-dialog title="新增临时卡" :visible.sync="addlskdialog">
             <el-form :model="lskdialog" label-position="left" label-width="120px" size ="mini">
                 <el-form-item label="卡号" >
-                    <el-input v-model="lskdialog.kh"  ></el-input>
+                    <el-input v-model="lskdialog.kh"  :disabled = "true"></el-input>
                 </el-form-item>
                 <el-form-item label="持卡人身份证号" >
                     <el-input v-model="lskdialog.ckrsfzh"  style = "float :left;width:65%"></el-input>
@@ -315,11 +315,32 @@
 
             },
             addLsk(){
+                let date = new Date()
+                let kh = '';
+                let year  = date.getFullYear().toString()
+                let month = (date.getMonth() + 1).toString()
+                let d =date.getDate().toString()
+                let hours = date.getHours().toString()
+                let minutes = date.getMinutes().toString()
+                let seconds = date.getSeconds().toString()
+                kh = year + month + d + hours + minutes + seconds
+                let num="";
+                for(var i=0;i<4;i++){
+                    num+=Math.floor(Math.random()*10)
+                }
+                kh = kh+ num.toString()
+                this.lskdialog.kh = kh
                 this.addlskdialog = true
             },
             lskaddqueding(lskdialog){
                 this.$axios.post("/api/lsk/addLskxx",lskdialog).then(re =>{
                     this.tableData = re.data.data
+                    if(re.data.code == "OK"){
+                        this.addlskdialog = false
+                        this.$message("添加成功")
+                    }else{
+                        this.$message("添加失败")
+                    }
                 })
     },
             lskquxiao(){

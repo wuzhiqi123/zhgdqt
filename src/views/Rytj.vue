@@ -377,9 +377,8 @@
         methods: {
             getWorkersList() {
                 this.$axios.post("/api/user/getUser",this.parameter).then(re => {
-
+                    this.wrz = [];
                     this.itmes = re.data.data
-
                     for(let i = 0 ;i<this.itmes.length ;i++){
                         if(this.itmes[i].ssnm != null && this.itmes[i].ssnm !=""){
                             this.wrz.push(this.itmes[i])

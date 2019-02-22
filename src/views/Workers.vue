@@ -12,7 +12,7 @@
                  >
             <div style = "height:5px"></div>
             <div >
-                <el-input  v-model="parameter.dwmc"  readonly  size="mini">
+                <el-input  v-model="parameter.dwmc" :disabled = "true"  readonly  size="mini">
                     <template slot="prepend">队长:</template>
                 </el-input>
             </div>
@@ -307,7 +307,7 @@
             <el-form size="mini">
                 <el-form-item >
                     <el-input placeholder="工人队伍" style="width: 60% ;height:10px ;float:left" ></el-input>
-                    <el-button  style=" width: 30% ;height:29px ;float:left"  type="primary" size ="small" icon="el-icon-search" ></el-button>
+                    <el-button  style=" width: 30% ;height:29px ;float:left"  type="primary" size ="small" icon="el-icon-search" @click="getGrdw"></el-button>
                 </el-form-item>
             </el-form>
         </div>
@@ -334,7 +334,7 @@
         <el-row>
             <el-row>
                 <el-col :span="12">
-                    <div style="width:300px;height:240px;float:right" id="chart"></div>
+                    <div style="width:300px;height:240px;float:right" id="rcrq"></div>
                 </el-col>
                 <el-col :span="12">
                     <div style="width:300px;height:240px;float:right" id="chart"></div>
@@ -387,8 +387,13 @@
                  endTime: ""
              }*/
              bzparma:{
-                 nm:'',
-                 mc:'',
+                 dwnm:'',
+                 bznm:'',
+                 bzmc:'',
+             },
+             dwparma:{
+                 dwnm:'',
+                 dwmc:'',
              },
              grxx:{
                  image:'',
@@ -451,7 +456,6 @@
         },
         created(){
             this.getLWDWList();
-            this.getlwbzList();
             this.getGgrgz()
         },
         methods:{
@@ -627,18 +631,19 @@
                     this.lwdw = re.data.data
                     this.parameter.dwnm = re.data.data[0].nm
                     this.parameter.dwmc = re.data.data[0].mc
+                    this.bzparma.dwnm = re.data.data[0].nm
+                    this.getlwbzList(this.bzparma);
                     this.getWorkersList(this.parameter);
 
                 })
             },
-            getlwbzList(){
-                this.$axios.post("/api/dictionary/getGrssbz",this.bzparma).then(re =>{
+            getlwbzList(bzparma){
+                this.$axios.post("/api/dictionary/getGrssbz",bzparma).then(re =>{
                     this.lwbz = re.data.data
-/*                    let aa = {};
-                    aa.dwnm = re.data.data[0].nm
-                    this.getWorkersList(aa);*/
-
                 })
+            },
+            getGrdw(val){
+
             },
             onDeleteMoney(row, index) {
                 let aa = {};

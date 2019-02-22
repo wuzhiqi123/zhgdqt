@@ -116,7 +116,7 @@
                 </el-dialog>
 
         <div style = "height:50%">
-        <el-table :data="itmes" style="width: 100%"  >
+        <el-table :data="gr" style="width: 100%"  >
             <el-table-column
                     prop="xm"
                     label="工人姓名"
@@ -167,6 +167,7 @@
                 pxlx:'',
                 dialogTableVisible:false,
                 itmes:'',
+                gr:'',
                 parameter:{
                     bz:'',
                     bznm:'',
@@ -232,6 +233,7 @@
                 })
             },
             changeFun (val) {
+                this.gr = val
                 this.form.workersList = val // 返回的是选中的列的数组集合
             },
         },
