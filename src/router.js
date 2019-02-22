@@ -16,6 +16,7 @@ import Aqjypx from './views/Aqjypx'
 import Rytj from './views/Rytj'
 import Sslxx from './views/Sslxx'
 import Jljl from './views/Jljl'
+import NewPage from './views/NewPage'
 import Current from './views/Current'
 
 Vue.use(Router)
@@ -47,6 +48,7 @@ const router  = new Router({
         { path: '/jljl', name: 'jljl', component: Jljl },
         { path: '/aqjypx', name: 'aqjypx', component: Aqjypx },
         { path: '/ssqxt', name: 'ssqxt', component: Ssqxt },
+        { path: '/NewPage', name: 'NewPage', component: NewPage },
       ]
     },
 

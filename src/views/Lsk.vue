@@ -337,9 +337,11 @@
                     this.tableData = re.data.data
                     if(re.data.code == "OK"){
                         this.addlskdialog = false
-                        this.$message("添加成功")
+                        this.$router.push("NewPage");
+                        this.$router.go(-1);
+                        this.$message("成功")
                     }else{
-                        this.$message("添加失败")
+                        this.$message("失败")
                     }
                 })
     },
