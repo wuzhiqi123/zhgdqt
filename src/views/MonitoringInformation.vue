@@ -352,7 +352,6 @@
                         }
                     }
                 }
-                debugger;
                 let option = '';
                 myChart.setOption(
                     option = {
