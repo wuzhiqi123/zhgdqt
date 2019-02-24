@@ -1,17 +1,17 @@
 <template>
     <div>
-        <div style="width:800px;height:500px" id="pm25"></div>
-        <div style="width:800px;height:500px" id="pm10"></div>
-        <div style="width:800px;height:500px" id="tsp"></div>
-        <div style="width:800px;height:500px" id="zs"></div>
-        <div style="width:800px;height:500px" id="wd"></div>
-        <div style="width:800px;height:500px" id="sd"></div>
-        <div style="width:800px;height:500px" id="fl"></div>
-        <div style="width:800px;height:500px" id="fs"></div>
-        <div style="width:800px;height:500px" id="fxfw"></div>
-        <div style="width:800px;height:500px" id="fxds"></div>
-        <div style="width:800px;height:500px" id="qy"></div>
-        <div style="width:800px;height:500px" id="gz"></div>
+        <div style="margin : 0px 20px 10px 10px ;width:400px;height:250px;float:left" id="pm25"></div>
+        <div style="margin : 0px 20px 10px 10px ;width:400px;height:250px;float:left" id="pm10"></div>
+        <div style="margin : 0px 20px 10px 10px ;width:400px;height:250px;float:left" id="tsp"></div>
+        <div style="margin : 0px 20px 10px 10px ;width:400px;height:250px;float:left" id="zs"></div>
+        <div style="margin : 0px 20px 10px 10px ;width:400px;height:250px;float:left" id="wd"></div>
+        <div style="margin : 0px 20px 10px 10px ;width:400px;height:250px;float:left" id="sd"></div>
+        <div style="margin : 0px 20px 10px 10px ;width:400px;height:250px;float:left" id="fl"></div>
+        <div style="margin : 0px 20px 10px 10px ;width:400px;height:250px;float:left" id="fs"></div>
+        <div style="margin : 0px 20px 10px 10px ;width:400px;height:250px;float:left" id="fxfw"></div>
+        <div style="margin : 0px 20px 10px 10px ;width:400px;height:250px;float:left" id="fxds"></div>
+        <div style="margin : 0px 20px 10px 10px ;width:400px;height:250px;float:left" id="qy"></div>
+        <div style="margin : 0px 20px 10px 10px ;width:400px;height:250px;float:left" id="gz"></div>
     </div>
 </template>
 
@@ -72,51 +72,51 @@
                     for(let curve in itmes[i]){
                         if ("pm25" == curve) {
                             data.pm25.push(itmes[i][curve])
-                            date.push(itmes[i].sjsj)
+                            date.push(itmes[i].sjsj.split(" ")[0])
                         }
                         if ("pm10" == curve) {
                             data.pm10.push(itmes[i][curve])
-                            date.push(itmes[i].sjsj)
+                            date.push(itmes[i].sjsj.split(" ")[0])
                         }
                         if ("tsp" == curve) {
                             data.tsp.push(itmes[i][curve])
-                            date.push(itmes[i].sjsj)
+                            date.push(itmes[i].sjsj.split(" ")[0])
                         }
                         if ("zs" == curve) {
                             data.zs.push(itmes[i][curve])
-                            date.push(itmes[i].sjsj)
+                            date.push(itmes[i].sjsj.split(" ")[0])
                         }
                         if ("wd" == curve) {
                             data.wd.push(itmes[i][curve])
-                            date.push(itmes[i].sjsj)
+                            date.push(itmes[i].sjsj.split(" ")[0])
                         }
                         if ("sd" == curve) {
                             data.sd.push(itmes[i][curve])
-                            date.push(itmes[i].sjsj)
+                            date.push(itmes[i].sjsj.split(" ")[0])
                         }
                         if ("fl" == curve) {
                             data.fl.push(itmes[i][curve])
-                            date.push(itmes[i].sjsj)
+                            date.push(itmes[i].sjsj.split(" ")[0])
                         }
                         if ("fs" == curve) {
                             data.fs.push(itmes[i][curve])
-                            date.push(itmes[i].sjsj)
+                            date.push(itmes[i].sjsj.split(" ")[0])
                         }
                         if ("fxfw" == curve) {
                             data.fxfw.push(itmes[i][curve])
-                            date.push(itmes[i].sjsj)
+                            date.push(itmes[i].sjsj.split(" ")[0])
                         }
                         if ("fxds" == curve) {
                             data.fxds.push(itmes[i][curve])
-                            date.push(itmes[i].sjsj)
+                            date.push(itmes[i].sjsj.split(" ")[0])
                         }
                         if ("qy" == curve) {
                             data.qy.push(itmes[i][curve])
-                            date.push(itmes[i].sjsj)
+                            date.push(itmes[i].sjsj.split(" ")[0])
                         }
                         if ("gz" == curve) {
                             data.gz.push(itmes[i][curve])
-                            date.push(itmes[i].sjsj)
+                            date.push(itmes[i].sjsj.split(" ")[0])
                         }
 
                     }
@@ -124,41 +124,54 @@
                     for( let index in this.selectss){
                         let name = this.selectss[index]
                         let sj=[]
+                        let zs = '';
                         let myChart = echarts.init(document.getElementById(name));
-                        debugger;
                         if(name == "pm25"){
                             sj = data.pm25
+                            zs = "PM2.5（ug/m3"
+
                         }else if(name == "pm10"){
                             sj = data.pm10
+                            zs = "PM10（ug/m3"
                         }
                         else if(name == "tsp"){
                             sj = data.tsp
+                            zs = "TSP（ug/m3"
                         }
                         else if(name == "zs"){
                             sj = data.zs
+                            zs = "噪声(dB)"
                         }
                         else if(name == "wd"){
                             sj = data.wd
+                            zs = "温度(°C)"
                         }
                         else if(name == "sd"){
                             sj = data.sd
+                            zs = "湿度(%RH)"
                         }
                         else if(name == "fl"){
                             sj = data.pm25
+                            zs = "风力(级)"
                         }
                         else if(name == "fs"){
                             sj = data.fs
+                            zs = "风速(m/s)"
                         }
                         else if(name == "fxfw"){
                             sj = data.fxfw
+                            zs = "风向（方位)"
                         }else if(name == "fxds"){
                             sj = data.fxds
+                            zs = "风向（度数）（°）"
                         }
                         else if(name == "qy"){
                             sj = data.qy
+                            zs = "气压（Kpa）"
                         }
                         else if(name == "gz"){
                             sj = data.gz
+                            zs = "光照（Lux）"
                         }
                         let option = '';
                         myChart.setOption(
@@ -171,7 +184,7 @@
                                 },
                                 title: {
                                     left: 'center',
-                                    text:name+ '数据图',
+                                    text:zs+ '数据图',
                                 },
                                 toolbox: {
                                     feature: {

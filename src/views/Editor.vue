@@ -34,9 +34,16 @@
                                     <el-form-item prop='jg' label="籍贯:">
                                         <el-input type="jg" v-model="formData.jg"></el-input>
                                     </el-form-item>
-                                    <el-table-column prop="image" label="身份证照片" style=" float:right " >
-                                        <!-- 图片的显示 -->
-                                        <img :src="formData.src" />
+                                    <el-table-column prop="image" label="身份证照片" >
+                                        <el-row>
+                                            <!-- 图片的显示 align="right"align="right" -->
+                                            <img :src="formData.src" style = "width :102px ;height: 100px;" align="right"/>
+                                            <img :src="formData.paizhao" style = "width :102px ;height: 100px;" align="right"/>
+
+                                        </el-row>
+                                        <el-row>
+                                            <el-button type="primary" size ="mini"  @click='paizhao()'style="float:right">拍照</el-button>
+                                        </el-row>
                                     </el-table-column>
                                     <!--<div id="upload">
                                         <label class="el-form-item__label" style="width: 80px;">上传图片</label>
@@ -179,6 +186,7 @@
         },
         data (){
             return {
+                websocket: {},
                 format_whcd_list:[],
                 format_xb_list:[],
                 format_mz_list:[],
@@ -187,7 +195,8 @@
                 format_grssbz_list:[],
                 format_grgz_list:[],
                 formData:{
-                    src:'',
+                    paizhao:require('../assets/timg.png'),
+                    src:require('../assets/timg.png'),
                     sfzh:'',
                     xm:'',
                     csrq:'',
@@ -281,6 +290,49 @@
                     this.formData.tc=this.$route.params.tc,
                     this.formData.lxdh=this.$route.params.lxdh
             },
+
+            initWebSocket(){ //初始化weosocket
+                //let url ="ws://" + document.location.host + "/WebChat/websocket/" + username + "/"+ _img
+                const wsuri ="ws://127.0.0.1:8282/websocket/paizhao"//ws地址
+                console.log(wsuri)
+                this.websock = new WebSocket(wsuri);
+                this.websocket.onopen = this.websocketonopen;
+                //onopen
+                this.websocket.onerror = this.websocketonerror;
+
+                this.websock.onmessage = this.websocketonmessage;
+                this.websock.onclose = this.websocketclose;
+            },
+
+            websocketonopen() {
+                console.log("WebSocket连接成功");
+            },
+            websocketonerror(e) { //错误
+                console.log("WebSocket连接发生错误");
+            },
+            websocketonmessage(e){ //数据接收
+                console.log(e);
+                let src = "data:image/jpg;base64," + e.data
+                if("连接成功" == src){
+                    this.formData.paizhao = null
+                }else{
+                    this.formData.paizhao = src
+                }
+
+            },
+
+            websocketsend(agentData){//数据发送
+                this.websock.send(agentData);
+            },
+
+            websocketclose(e){ //关闭
+                // console.log("connection closed (" + e.code + ")");
+            },
+            paizhao(){
+                //点击拍照时开启长连接
+                this.initWebSocket()
+            },
+
             ucc(){
                 this.$axios.post("/api/user/ucc").then(re =>{
                     this.formData.sfzh = re.data.data.IDNUM;

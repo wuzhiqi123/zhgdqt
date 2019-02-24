@@ -357,6 +357,7 @@
                 lwdw:'',
                 lwbz:'',
                 wrz:[],
+
                 parameter:{
                     bz:'',
                     bznm:"",
@@ -372,15 +373,15 @@
         created(){
             this.getWorkersList()
             this.getLWDWList();
-            this.getlwbzList();
+            this.getlwbzList(this.parameter);
         },
         methods: {
             getWorkersList() {
                 this.$axios.post("/api/user/getUser",this.parameter).then(re => {
                     this.wrz = [];
-                    this.itmes = re.data.data
+                    this.itmes = re.data.data.workersList
                     for(let i = 0 ;i<this.itmes.length ;i++){
-                        if(this.itmes[i].ssnm != null && this.itmes[i].ssnm !=""){
+                        if(this.itmes[i].ssnm == null || this.itmes[i].ssnm ==""){
                             this.wrz.push(this.itmes[i])
                         }
                     }
@@ -398,8 +399,8 @@
 
                 })
             },
-            getlwbzList(){
-                this.$axios.post("/api/dictionary/getGrssbz").then(re =>{
+            getlwbzList(bzparma){
+                this.$axios.post("/api/dictionary/getGrssbz",bzparma).then(re =>{
                     this.lwbz = re.data.data
 
                 })

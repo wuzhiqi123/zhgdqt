@@ -355,8 +355,8 @@
             ucc(){
                 this.$axios.post("/api/user/ucc").then(re =>{
                     this.lskdialog.ckrsfzh = re.data.data.IDNUM;
-                  /*  this.formData.xm = re.data.data.CHNAME;
-                    this.formData.jtzz = re.data.data.ADDRESS;
+                    this.lskdialog.ckrxm = re.data.data.CHNAME;
+                    /*this.formData.jtzz = re.data.data.ADDRESS;
                     this.formData.xb = re.data.data.SEX
                     this.formData.mz = re.data.data.FOLK;
                     this.formData.csrq = re.data.data.BIRTH;

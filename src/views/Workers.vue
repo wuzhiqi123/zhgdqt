@@ -18,8 +18,8 @@
             </div>
             <div style = "height:4px"></div>
             <el-form-item >
-                <el-input placeholder="请输入工人姓名,电话号码" style="width: 200px ;height:10px ;float:left"></el-input>
-                <el-button  style=" width: 50px ;height:29px ;float:left" type="primary" size ="small" icon="el-icon-search" ></el-button>
+                <el-input v-model="parameter.grkh" placeholder="请输入工人姓名,电话号码" style="width: 200px ;height:10px ;float:left"></el-input>
+                <el-button  style=" width: 50px ;height:29px ;float:left" type="primary" size ="small" icon="el-icon-search"  @click="grkhClik"></el-button>
             </el-form-item>
             <el-form-item class="btnRight">
                 <el-button style=" width: 50px " type="primary" size ="mini"  @click='handleAdd()'>添加</el-button>
@@ -153,8 +153,8 @@
 
         <el-table-column prop="image" label="图片"  >
             <!-- 图片的显示 -->
-            <template   slot-scope="scope">
-                <img src="data:image/jpg;base64," />
+            <template slot-scope="scope">
+                <img  :src="scope.row.image"  style="width: 50px;height: 50px">
             </template>
         </el-table-column>
         <el-table-column
@@ -306,7 +306,7 @@
         <div div style="width: 100% ;height:52px; float:left">
             <el-form size="mini">
                 <el-form-item >
-                    <el-input placeholder="工人队伍" style="width: 60% ;height:10px ;float:left" ></el-input>
+                    <el-input  v-model = "dwparma.dwmc" placeholder="工人队伍" style="width: 60% ;height:10px ;float:left" ></el-input>
                     <el-button  style=" width: 30% ;height:29px ;float:left"  type="primary" size ="small" icon="el-icon-search" @click="getGrdw"></el-button>
                 </el-form-item>
             </el-form>
@@ -331,28 +331,25 @@
 </div>
     </el-tab-pane>
     <el-tab-pane label="工人统计" name="second">
-        <el-row>
-            <el-row>
-                <el-col :span="12">
-                    <div style="width:300px;height:240px;float:left" id="rcrq"></div>
+        <!-- 2*2 -->
+        <div style="height:100%;width:100%" >
+            <el-row :gutter="10" type="flex" class="row-bg" justify="center">
+                <el-col  :span="12">
+                    <div style="width:400px;height:230px;float:left"  id="rcrq"></div>
                 </el-col>
-                <el-col :span="12">
-                    <div style="width:300px;height:240px;float:right" id="chart"></div>
-                </el-col>
-            </el-row>
-            <el-row>
-                <el-col :span="12">
-                    <div style="width:300px;height:240px;float:left" id="bz"></div>
-                </el-col>
-                <el-col :span="12">
-                    <div style="width:300px;height:240px ;float:right" id="dw"></div>
+                <el-col  :span="12">
+                    <div style="width:400px;height:230px ;float:right"  id="chart"></div>
                 </el-col>
             </el-row>
-        </el-row>
-        <el-row>
-            <el-col :span="24"></el-col>
-        </el-row>
-        <div style="width:100%;height:40%" >
+            <br>
+            <el-row :gutter="10" type="flex" class="row-bg" justify="center">
+                <el-col :span="12">
+                    <div style="width:400px;height:230px;float:left" id="bz"></div>
+                </el-col>
+                <el-col :span="12">
+                    <div style="width:400px;height:230px ;float:right" id="dw"></div>
+                </el-col>
+            </el-row>
         </div>
     </el-tab-pane>
     </el-tabs>
@@ -369,6 +366,7 @@
              itmes :[],
              workersMap:'',
              parameter:{
+                 grkh:'',
                  bz:'',
                  bznm:'',
                  dwnm:'',
@@ -456,7 +454,7 @@
          }
         },
         created(){
-            this.getLWDWList();
+            this.getLWDWList(this.dwparma);
             this.getGgrgz()
         },
         methods:{
@@ -633,9 +631,8 @@
                 let key = []
                 let value = []
                 //2、遍历Json串获取其属性
-                debugger;
                 for(let item in this.workersMap){
-                     key.push(item)//key所对应的value
+                     key.push(item.split(" ")[0])//key所对应的value
                     value.push(this.workersMap[item])
                 }
                 let rcrq = echarts.init(document.getElementById("rcrq") );
@@ -689,7 +686,7 @@
                         }],
                         series: [
                             {
-                                name:'模拟数据',
+                                name:'数据',
                                 type:'line',
                                 smooth:true,
                                 symbol: 'none',
@@ -711,8 +708,22 @@
                     }
                 })
             },
-            getLWDWList(){
-                this.$axios.post("/api/dictionary/getGrssdw").then(re =>{
+/*            formatSjsj(row, column){
+                let img =  ''
+                    if(row.sfzzp == null){
+                        if(row.pzzp != null){
+                            img = row.pzzp
+                        }else {
+                            img = row.sfzzp
+                        }
+
+                    }else if(row.sfzzp != null){
+                        img = row.sfzzp
+                    }
+                return img;
+            },*/
+            getLWDWList(dwparma){
+                this.$axios.post("/api/dictionary/getGrssdw",dwparma).then(re =>{
                     this.lwdw = re.data.data
                     this.parameter.dwnm = re.data.data[0].nm
                     this.parameter.dwmc = re.data.data[0].mc
@@ -722,13 +733,26 @@
 
                 })
             },
+            grkhClik(){
+                if(this.parameter.grkh != null && this.parameter.grkh != ""){
+                    this.getWorkersList(this.parameter);
+                }else{
+                    this.$message("请输入工人姓名或卡号")
+                }
+            },
             getlwbzList(bzparma){
                 this.$axios.post("/api/dictionary/getGrssbz",bzparma).then(re =>{
                     this.lwbz = re.data.data
                 })
             },
-            getGrdw(val){
-
+            getGrdw(){
+                if(this.dwparma.dwmc != null && this.dwparma.dwmc !=""){
+                    this.$axios.post("/api/dictionary/getGrssdw",this.dwparma).then(re =>{
+                        this.lwdw = re.data.data
+                    })
+                }else {
+                    this.$message("请输入工程队伍名称");
+                }
             },
             onDeleteMoney(row, index) {
                 let aa = {};
@@ -837,10 +861,7 @@
     .el-row {
         margin-bottom: 15px;
     }
-    .grid-content {
-        border-radius: 4px;
-        min-height: 200px;
-    }
+
     .el-dialog__header{
         background: #2b46bf;
     }

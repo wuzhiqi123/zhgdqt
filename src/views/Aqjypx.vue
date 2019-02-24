@@ -224,12 +224,13 @@
                         this.$message("成功");
                     }else{
                         this.$message(re.data.data);
+                        this.gr = '';
                     }
                 })
             },
             getWorkersList(grdw){
                 this.$axios.post("/api/user/getUser",grdw).then(re =>{
-                    this.itmes = re.data.data
+                    this.itmes = re.data.data.workersList
                 })
             },
             changeFun (val) {

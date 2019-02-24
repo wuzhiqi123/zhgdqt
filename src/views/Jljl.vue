@@ -397,7 +397,7 @@
                     </el-select>
                 </el-form-item>
                   <el-form-item label="受奖励班组" >
-                      <el-select v-model="tjjljlform.sjlbz"  filterable placeholder="请选择">
+                      <el-select v-model="tjjljlform.bznm"  filterable placeholder="请选择">
                           <el-option
                                   v-for="(  item ,index) in lwbz"
                                   :key="index"
@@ -463,6 +463,7 @@
                 jljlparma:{
                     jlr:'0',
                     zt:'',
+                    ry:'',
                 },
                 zt:[
                     {
@@ -500,18 +501,22 @@
                     fssj:'',
                 },
                 ckrorkh:'',
+                dwparma:{
+                    dwnm:'',
+                    dwmc:'',
+                },
             }
     },
         created(){
             this.getJljl(this.jljlparma)
             this.getlwbzList()
-            this.getLWDWList();
+            this.getLWDWList(this.dwparma);
             this.getjllx();
         },
         methods:{
             getWorkersList(grdw){
                 this.$axios.post("/api/user/getUser",grdw).then(re =>{
-                    this.users = re.data.data
+                    this.users = re.data.data.workersList
                 })
             },
             getlwbzList(bzparma){
@@ -520,8 +525,8 @@
 
                 })
             },
-            getLWDWList(){
-                this.$axios.post("/api/dictionary/getGrssdw").then(re =>{
+            getLWDWList(dwparma){
+                this.$axios.post("/api/dictionary/getGrssdw",dwparma).then(re =>{
                     this.lwdw = re.data.data
 
                 })
@@ -545,17 +550,18 @@
                 this.tjjljl = true
             },
             addBz(){
+                //this.tjjljlform = ''
                 this.tjjljlbz = true
             },
             tjjlquxiao(){
                 this.tjjljl = false
             },
             seleUser(val){
-                this.grdw.dwmc = val
+                this.grdw.dwnm = val
                 this.getWorkersList(this.grdw)
             },
             selebz(val){
-                this.bzparma.nm = val
+                this.bzparma.dwnm = val
                 this.getlwbzList(this.bzparma)
             },
             tjjlqueding(tjjljlform){
@@ -584,6 +590,7 @@
                         this.tjjljl = false
                         this.getJljl(this.jljlparma)
                         this.$message("添加成功")
+                        this.tjjljlform = ''
                     }else{
                         this.$message("添加失败")
                     }
@@ -592,10 +599,23 @@
             tjbzjlquxiao(){
                 this.tjjljlbz = false
             },
+            selectLsk(){
+                if(this.ckrorkh != null && this.ckrorkh != ""){
+                    this.jljlparma.ry = this.ckrorkh
+                    this.getJljl(this.jljlparma)
+                }else{
+                    this.$message("请输入奖励对象名称")
+                }
+            },
             tjjlbzqueding(tjjljlform){
                 for(let i = 0; i< this.lwbz.length ;i++){
                     if(this.lwbz[i].nm == tjjljlform.bznm){
                         tjjljlform.sjlbz =   this.lwbz[i].mc
+                    }
+                }
+                for(let i = 0; i< this.jllx.length ;i++){
+                    if(this.jllx[i].nm == tjjljlform.jllxnm){
+                        tjjljlform.jllx =   this.jllx[i].mc
                     }
                 }
                 for(let i = 0; i< this.lwdw.length ;i++){
